@@ -1,1 +1,49 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+private:
+void solve(TreeNode* root , vector<int> &arr){
 
+    if(root == NULL){
+        return;
+    }
+
+    arr.push_back(root -> val);
+    solve(root -> left , arr);
+    solve(root -> right , arr);
+} 
+TreeNode* tobst(vector<int> &arr , int s , int e){
+    if(s > e){
+        return NULL;
+    }
+
+    int mid = s + (e - s) / 2;
+
+    TreeNode* node = new TreeNode(arr[mid]);
+
+    node -> left = tobst(arr , s , mid - 1);
+    node -> right = tobst(arr , mid + 1 , e);
+
+    return node;
+}   
+public:
+    TreeNode* insertIntoBST(TreeNode* root, int val) {
+        
+        vector<int>arr;
+        solve(root , arr);
+        arr.push_back(val);
+
+        sort(arr.begin() , arr.end());
+         
+        return tobst(arr , 0 , arr.size() - 1); 
+    }
+};
